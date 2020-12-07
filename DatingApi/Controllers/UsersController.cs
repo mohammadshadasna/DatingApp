@@ -3,15 +3,19 @@ using System.Linq;
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+//using DatingApi.Controllers;
 
-namespace API.Controllers
+
+namespace DatingApi.Controllers
 {
-    [ApiController]
-
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    // [ApiController]
+                                //all these are now inherited from BaseApiController
+    // [Route("api/[controller]")]
+    // public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
         public UsersController(DataContext context)
@@ -20,6 +24,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             // var users = _context.Users.ToList();
@@ -28,6 +33,7 @@ namespace API.Controllers
             
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
